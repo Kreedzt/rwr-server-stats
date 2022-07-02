@@ -52,12 +52,12 @@ function App() {
             </p>
         </div>
         {groupedItems.map(grouped => (
-            <div key={grouped.groupName}>
-                <h4>
+            <div className="group-item" key={grouped.groupName}>
+                <h4 className="group-title">
                     {grouped.groupName}
                 </h4>
                 {grouped.serverList.map(s => (
-                    <div key={s.website}>
+                    <div className="server-item" key={s.website}>
                         <h5>
                             {s.name}
                         </h5>
