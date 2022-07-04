@@ -1,0 +1,15 @@
+/.github
+/.idea
+/node_modules
+/.log
+/dist
+/.git
+/public/env/message_list.js
+/public/env/server_list.js
+
+LICENSE
+.ignore
+.prettierrc
+*.png
+*.7z
+vite.build.config.ts
