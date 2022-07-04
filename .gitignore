@@ -26,3 +26,7 @@ dist-ssr
 # build config
 vite.build.config.ts
 publish_oss.js
+
+# env
+public/env/message_list.js
+public/env/server_list.js

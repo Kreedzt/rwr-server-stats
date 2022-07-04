@@ -1,4 +1,4 @@
-[{
+const server_list_example = [{
   "banner_image": "https://rwrstats.com/images/servers/124.223.113.204-50170.png",
   "group": "Azur Lane(碧蓝航线)",
   "name": "Azur Lane Imba CN1(1倍兵力)",
@@ -29,13 +29,23 @@
   "name": "GFLNP Imba CN7(Insane难度)",
   "website": "https://rwrstats.com/servers/124.223.71.223:50167/gflnp-imba-cn7"
 }, {
+  "banner_image": "https://rwrstats.com/images/servers/155.138.197.143-50167.png",
+  "group": "GFLNP(少女前线)",
+  "name": "GFLNP Imba US1(Normal难度)",
+  "website": "https://rwrstats.com/servers/155.138.197.143:50167/gflnp-imba-us1"
+}, {
   "banner_image": "https://rwrstats.com/images/servers/124.222.46.179-50168.png",
   "group": "RITBW(星河舰队)",
   "name": "RITBW Imba Test CN1",
   "website": "https://rwrstats.com/servers/124.222.46.179:50168/ritbw-imba-test-cn1"
 }, {
+  "banner_image": "https://rwrstats.com/images/servers/124.223.113.204-50168.png",
+  "group": "WW2 Undead(二战僵尸服务器)",
+  "name": "Ww2 Undead Imba Test CN1",
+  "website": "https://rwrstats.com/servers/124.223.113.204:50168/ww2-undead-imba-test-cn1"
+},{
   "banner_image": "https://rwrstats.com/images/servers/124.223.71.223-50180.png",
   "group": "RWD(僵尸服务器)",
   "name": "RWD CN Server Imba Test CN1",
   "website": "https://rwrstats.com/servers/124.223.71.223:50180/rwd-cn-server-imba-test-cn1"
-}]
+}];
