@@ -18,8 +18,6 @@
 
 ## 开发
 
-该项目依赖后端运行, 具体请参考后端的开发操作: https://github.com/Kreedzt/rwr-profile-server
-
 该项目依赖 [Nodejs](https://nodejs.org/en/) 进行开发
 
 首先安装依赖包, 该项目采用 `pnpm` 进行包管理
