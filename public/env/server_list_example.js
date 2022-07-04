@@ -1,4 +1,4 @@
-const server_list_example = [{
+const server_list = [{
   "banner_image": "https://rwrstats.com/images/servers/47.102.147.209-1235.png",
   "group": " Invasion",
   "name": " InvasionCN10",
