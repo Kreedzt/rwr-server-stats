@@ -1,5 +1,6 @@
-import {useMemo, useState} from 'react'
-import {GroupedServerItem, ServerItem} from "./types";
+import { useMemo, useState } from 'react';
+import { VERSION } from './constant';
+import { GroupedServerItem, ServerItem } from './types';
 import './App.css';
 
 function App() {
@@ -37,6 +38,9 @@ function App() {
 
   return (
     <div className="App">
+        <div className="author">
+            RWR 服务器状态查询 v: {VERSION}
+        </div>
         <div className="helper">
             {topMessageList.map((msg, index) => {
                 return (
