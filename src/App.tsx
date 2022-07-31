@@ -1,10 +1,12 @@
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import { VERSION } from './constant';
 import { GroupedServerItem } from './types';
 import './App.css';
 
 function App() {
-    const groupedItems = useMemo<GroupedServerItem[]>(() => {
+    const [groupedItems, setGroupedItems] = useState<GroupedServerItem[]>([]);
+
+    useEffect(()=> {
         /**
          * key: group name
          * value: ServerItem[]
@@ -28,8 +30,7 @@ function App() {
                 serverList: serverItems
             })
         });
-
-        return groupedServerItemList;
+        setGroupedItems(groupedServerItemList);
     }, []);
 
     const topMessageList = useMemo<string[]>(() => {
