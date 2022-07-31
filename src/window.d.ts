@@ -1,5 +1,6 @@
 declare interface ServerItem {
-    banner_image: string;
+    ip: string;
+    port: number;
     group: string;
     name: string;
     website: string;

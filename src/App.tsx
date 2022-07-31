@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import {useCallback, useMemo, useState} from 'react';
 import { VERSION } from './constant';
-import { GroupedServerItem, ServerItem } from './types';
+import { GroupedServerItem } from './types';
 import './App.css';
 
 function App() {
@@ -36,6 +36,16 @@ function App() {
         return message_list;
     }, []);
 
+    const joinServer = useCallback((server: ServerItem)=> {
+        const url = `steam://rungameid/270150//server_address=${server.ip} server_port=${server.port}`;
+        window.open(url);
+    }, []);
+
+    const getBannerImage = useCallback((server: ServerItem) => {
+        const url = `https://rwrstats.com/images/servers/${server.ip}-${server.port}.png`;
+        return url;
+    }, []);
+
   return (
     <div className="App">
         <div className="author">
@@ -61,12 +71,15 @@ function App() {
                             {s.name}
                         </h5>
                         <a href={s.website}>
-                            <img src={s.banner_image} alt={s.website}/>
+                            <img src={getBannerImage(s)} alt={s.website}/>
                         </a>
                         <div>
                             <a href={s.website}>
                                 <button>
                                     访问详情 &gt;
+                                </button>
+                                <button onClick={() => joinServer(s)}>
+                                    加入服务器 &gt;
                                 </button>
                             </a>
                         </div>

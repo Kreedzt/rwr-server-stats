@@ -10,7 +10,8 @@
 所有需要配置的文件都在 `public/env` 目录下, 把文件名的 `_example` 去掉即可正常启动空项目
 
 - server_list.js: 该文件提供服务器信息, 数组中每项结构如下:
-  + banner_image: 服务器信息缩略图片, 从 [rwr stats](https://rwrstats.com/servers) 获取, 找到服务器并跳转详情后, 点击 `Server banner` 按钮可获取到地址
+  + ip: 服务器IP
+  + port: 服务器端口
   + group: 分组名, 任意填写, 不同分组会以分割线隔开
   + name: 服务器名, 任意填写
   + website: 服务器详情信息地址, 从 [rwr stats](https://rwrstats.com/servers) 获取, 是渲染按钮的跳转链接地址
@@ -70,4 +71,12 @@ pnpm build
 
 ## 部署
 
-见 [部署文档](https://github.com/Kreedzt/rwr-server-stats/blob/master/DEPLOYMENT.md) 
+见 [部署文档](https://github.com/Kreedzt/rwr-server-stats/blob/master/DEPLOYMENT.md)
+
+## 同类型项目
+
+- [rwr-serv-stats](https://github.com/frg2089/rwr-serv-stats)
+
+## 协议
+
+- [GPLv3](https://opensource.org/licenses/GPL-3.0)
