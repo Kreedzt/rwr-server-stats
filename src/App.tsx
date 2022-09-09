@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { VERSION } from "./constant";
 import { DisplayServerItem, GroupedServerItem } from "./types";
-import "./App.css";
 import { getServerList } from "./services";
 import { parseServerListFromString } from "./utils";
+import "./App.css";
 
 function App() {
   const [mapDict, setMapDict] = useState<Record<string, DisplayServerItem>>({});
@@ -87,14 +87,22 @@ function App() {
           {grouped.serverList.map((s) => (
             <div className="server-item" key={s.website}>
               <h5>{s.name}</h5>
+              <div className="para-item">
+                国家/地区:
+                {mapDict[s.name]?.country}
+              </div>
               <div className="para-item">地图: {mapDict[s.name]?.mapId}</div>
+              <div className="para-item">
+                描述:
+                <p>{mapDict[s.name]?.comment}</p>
+              </div>
               <div className="para-item">
                 玩家数量: {mapDict[s.name]?.currentPlayers} /{" "}
                 {mapDict[s.name]?.maxPlayers}
               </div>
               <div className="para-item">
                 玩家列表:
-                {mapDict[s.name]?.playerList.length > 0 ? (
+                {mapDict[s.name] && mapDict[s.name].playerList.length > 0 ? (
                   <ul>
                     {mapDict[s.name].playerList.map((playerName) => (
                       <li key={playerName}>{playerName}</li>

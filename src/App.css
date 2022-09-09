@@ -20,3 +20,11 @@
 .server-item {
 
 }
+
+.para-item {
+  margin: 5px 0;
+}
+
+.para-item p {
+  margin: 0;
+}
