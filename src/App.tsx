@@ -2,11 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { VERSION } from "./constant";
 import { DisplayServerItem, GroupedServerItem } from "./types";
 import { getServerList } from "./services";
-import { parseServerListFromString } from "./utils";
+import {getCurrentTimeStr, getUnlimitedServerList, parseServerListFromString} from "./utils";
 import "./App.css";
 
 function App() {
   const [mapDict, setMapDict] = useState<Record<string, DisplayServerItem>>({});
+  const [loading, setLoading] = useState<boolean>(false);
+  const [requestCompletedTime, setRequestCompletedTime] = useState<string>();
 
   const groupedItems = useMemo<GroupedServerItem[]>(() => {
     /**
@@ -40,14 +42,12 @@ function App() {
   }, []);
 
   const refresh = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     try {
-      const resString = await getServerList({
-        start: 0,
-        size: 100,
-        names: 1,
-      });
-
-      const serverList = parseServerListFromString(resString);
+      const serverList = await getUnlimitedServerList();
       console.log(serverList);
 
       const newMapDict = serverList.reduce((acc, item) => {
@@ -56,10 +56,13 @@ function App() {
       }, {} as Record<string, DisplayServerItem>);
 
       setMapDict(newMapDict);
+      setRequestCompletedTime(getCurrentTimeStr());
     } catch (e) {
       console.log("Error", e);
+    } finally {
+      setLoading(false);
     }
-  }, [groupedItems]);
+  }, [groupedItems, loading]);
 
   useEffect(() => {
     refresh();
@@ -79,7 +82,11 @@ function App() {
         })}
       </div>
       <div>
-        <button onClick={refresh}>点我刷新数据</button>
+        <button onClick={refresh} disabled={loading}>点我刷新数据</button>
+        <p>最后刷新时间:{requestCompletedTime}</p>
+        {loading && (
+            <p>刷新中, 请勿操作...</p>
+        )}
       </div>
       {groupedItems.map((grouped) => (
         <div className="group-item" key={grouped.groupName}>

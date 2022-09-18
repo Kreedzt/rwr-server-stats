@@ -1,4 +1,5 @@
 import { DisplayServerItem } from "./types";
+import { getServerList } from "./services";
 
 const parseElementText = (
   element: Element,
@@ -7,7 +8,9 @@ const parseElementText = (
   return element.querySelector(selector)?.textContent;
 };
 
-export const parseServerListFromString = (resString: string): DisplayServerItem[] => {
+export const parseServerListFromString = (
+  resString: string
+): DisplayServerItem[] => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(resString, "text/xml");
 
@@ -72,4 +75,36 @@ export const parseServerListFromString = (resString: string): DisplayServerItem[
   });
 
   return serverList;
+};
+
+export const getUnlimitedServerList = async () => {
+  let start = 0;
+  const size = 100;
+
+  const totalServerList: DisplayServerItem[] = [];
+
+  let parsedServerList: DisplayServerItem[] = [];
+
+  do {
+    const newServerList = await getServerList({
+      start,
+      size,
+      names: 1,
+    });
+
+    parsedServerList = parseServerListFromString(newServerList);
+
+    totalServerList.push(...parsedServerList);
+    start += size;
+  } while (parsedServerList.length === size);
+
+  return totalServerList;
+};
+
+export const getCurrentTimeStr = () => {
+  const date = new Date();
+
+  return `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };
