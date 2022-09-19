@@ -104,7 +104,25 @@ export const getUnlimitedServerList = async () => {
 export const getCurrentTimeStr = () => {
   const date = new Date();
 
-  return `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const yearStr = date.getFullYear();
+  const monthStr = (date.getMonth() + 1).toString().padStart(2, "0");
+  const dateStr = date.getDate().toString().padStart(2, "0");
+  const hourStr = date.getHours().toString().padStart(2, "0");
+  const minuteStr = date.getMinutes().toString().padStart(2, "0");
+  const secondStr = date.getSeconds().toString().padStart(2, "0");
+
+  const fullStr =
+    yearStr +
+    "-" +
+    monthStr +
+    "-" +
+    dateStr +
+    " " +
+    hourStr +
+    ":" +
+    minuteStr +
+    ":" +
+    secondStr;
+
+  return fullStr;
 };
