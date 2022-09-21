@@ -1,4 +1,4 @@
-import { DisplayServerItem } from "./types";
+import { DisplayServerItem, OnlineStats } from "./types";
 import { getServerList } from "./services";
 
 const parseElementText = (
@@ -125,4 +125,15 @@ export const getCurrentTimeStr = () => {
     secondStr;
 
   return fullStr;
+};
+
+export const generateEmptyOnlineStatItem = (): OnlineStats => {
+  const temp: OnlineStats = {
+    onlineServerCount: 0,
+    allServerCount: 0,
+    onlinePlayerCount: 0,
+    playerCapacityCount: 0,
+  };
+
+  return temp;
 };

@@ -14,11 +14,9 @@
 }
 
 .group-title {
-
 }
 
 .server-item {
-
 }
 
 .para-item {
@@ -27,4 +25,12 @@
 
 .para-item p {
   margin: 0;
+}
+
+.warn-msg {
+  color: orange;
+}
+
+.error-msg {
+  color: red;
 }

@@ -27,3 +27,10 @@ export interface DisplayServerItem {
   // TODO: unknown value
   realm: Nullable<any>;
 }
+
+export interface OnlineStats {
+  allServerCount: number;
+  onlineServerCount: number;
+  onlinePlayerCount: number;
+  playerCapacityCount: number;
+}
