@@ -2,7 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { VERSION } from "./constant";
 import { DisplayServerItem, GroupedServerItem } from "./types";
 import { getServerList } from "./services";
-import {getCurrentTimeStr, getUnlimitedServerList, parseServerListFromString} from "./utils";
+import {
+  getCurrentTimeStr,
+  getUnlimitedServerList,
+  parseServerListFromString,
+} from "./utils";
 import "./App.css";
 
 function App() {
@@ -82,11 +86,11 @@ function App() {
         })}
       </div>
       <div>
-        <button onClick={refresh} disabled={loading}>点我刷新数据</button>
+        <button onClick={refresh} disabled={loading}>
+          点我刷新数据
+        </button>
         <p>最后刷新时间:{requestCompletedTime}</p>
-        {loading && (
-            <p>刷新中, 请勿操作...</p>
-        )}
+        {loading && <p>刷新中, 请勿操作...</p>}
       </div>
       {groupedItems.map((grouped) => (
         <div className="group-item" key={grouped.groupName}>
@@ -94,31 +98,38 @@ function App() {
           {grouped.serverList.map((s) => (
             <div className="server-item" key={s.website}>
               <h5>{s.name}</h5>
-              <div className="para-item">
-                国家/地区:
-                {mapDict[s.name]?.country}
-              </div>
-              <div className="para-item">地图: {mapDict[s.name]?.mapId}</div>
-              <div className="para-item">
-                描述:
-                <p>{mapDict[s.name]?.comment}</p>
-              </div>
-              <div className="para-item">
-                玩家数量: {mapDict[s.name]?.currentPlayers} /{" "}
-                {mapDict[s.name]?.maxPlayers}
-              </div>
-              <div className="para-item">
-                玩家列表:
-                {mapDict[s.name] && mapDict[s.name].playerList.length > 0 ? (
-                  <ul>
-                    {mapDict[s.name].playerList.map((playerName) => (
-                      <li key={playerName}>{playerName}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  "暂无玩家"
-                )}
-              </div>
+              {mapDict[s.name] ? (
+                <>
+                  <div className="para-item">
+                    国家/地区:
+                    {mapDict[s.name].country}
+                  </div>
+                  <div className="para-item">地图: {mapDict[s.name].mapId}</div>
+                  <div className="para-item">
+                    描述:
+                    <p>{mapDict[s.name].comment}</p>
+                  </div>
+                  <div className="para-item">
+                    玩家数量: {mapDict[s.name].currentPlayers} /{" "}
+                    {mapDict[s.name].maxPlayers}
+                  </div>
+                  <div className="para-item">
+                    玩家列表:
+                    {mapDict[s.name].playerList.length > 0 ? (
+                      <ul>
+                        {mapDict[s.name].playerList.map((playerName) => (
+                          <li key={playerName}>{playerName}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      "暂无玩家"
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div>无法获取数据</div>
+              )}
+
               <div>
                 <a href={s.website}>
                   <button>访问详情 &gt;</button>
