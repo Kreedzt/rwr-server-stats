@@ -80,7 +80,7 @@ function App() {
       });
 
       nextOnlineStats[ALL_STATS_KEY] = {
-        allServerCount: rootServerOnlineCount,
+        allServerCount: rootServerTotalCount,
         onlineServerCount: rootServerOnlineCount,
         onlinePlayerCount: rootPlayerOnlineCount,
         playerCapacityCount: rootPlayerCapacityCount,
@@ -160,11 +160,21 @@ function App() {
         <p>最后刷新时间:&nbsp;{requestCompletedTime}</p>
       </div>
       <div className="all-stat-area">
-        <p>
+        <p
+          className={getServerStatClassName(
+            onlineStats[ALL_STATS_KEY].onlineServerCount,
+            onlineStats[ALL_STATS_KEY].allServerCount
+          )}
+        >
           服务器在线数: {onlineStats[ALL_STATS_KEY].onlineServerCount} /{" "}
           {onlineStats[ALL_STATS_KEY].allServerCount}
         </p>
-        <p>
+        <p
+          className={getPlayerStatClassName(
+            onlineStats[ALL_STATS_KEY].onlinePlayerCount,
+            onlineStats[ALL_STATS_KEY].playerCapacityCount
+          )}
+        >
           玩家在线数: {onlineStats[ALL_STATS_KEY].onlinePlayerCount} /{" "}
           {onlineStats[ALL_STATS_KEY].playerCapacityCount}
         </p>
