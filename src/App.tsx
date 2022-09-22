@@ -124,6 +124,10 @@ function App() {
     window.open(url);
   }, []);
 
+  const scrollToTop = useCallback(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const getServerStatClassName = useCallback((curr: number, total: number) => {
     if (curr !== total) {
       return "error-msg";
@@ -252,6 +256,9 @@ function App() {
           ))}
         </div>
       ))}
+      <div className="to-top" onClick={scrollToTop}>
+        ^ 回到顶部
+      </div>
     </div>
   );
 }

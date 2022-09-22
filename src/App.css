@@ -1,3 +1,7 @@
+html, body, .App {
+  scroll-behavior:smooth;
+}
+
 .App {
   padding: 20px;
 }
@@ -33,4 +37,17 @@
 
 .error-msg {
   color: red;
+}
+
+.to-top {
+  position: fixed;
+  background-color: antiquewhite;
+  padding: 10px;
+  cursor: pointer;
+  right: min(10vw, 40px);
+  bottom: min(10vh, 20px);
+}
+
+.to-top:hover {
+  color: orange;
 }
