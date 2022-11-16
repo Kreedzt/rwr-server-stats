@@ -1,5 +1,6 @@
-import { DisplayServerItem, OnlineStats } from "./types";
+import { DisplayServerItem, OnlineStats, Res } from "./types";
 import { getServerList } from "./services";
+import { XMLParser } from "fast-xml-parser";
 
 const parseElementText = (
   element: Element,
@@ -8,70 +9,47 @@ const parseElementText = (
   return element.querySelector(selector)?.textContent;
 };
 
+const fixPlayerList = (raw: string | undefined | string[]): string[] => {
+  if (Array.isArray(raw)) {
+    return raw;
+  }
+
+  if (typeof raw === "string") {
+    return [raw];
+  }
+
+  return [];
+};
+
 export const parseServerListFromString = (
   resString: string
 ): DisplayServerItem[] => {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(resString, "text/xml");
+  const parser = new XMLParser();
+  const res = parser.parse(resString) as Res;
 
-  const serverXMLList = xmlDoc.querySelectorAll("result > server");
-
-  const serverList: any[] = [];
-
-  serverXMLList.forEach((element) => {
-    const name = parseElementText(element, "name") as string;
-    const ipAddress = parseElementText(element, "address") as string;
-    const port = parseElementText(element, "port") as string;
-    const mapId = parseElementText(element, "map_id") as string;
-    const mapName = parseElementText(element, "map_name");
-    const bots = parseInt(parseElementText(element, "bots") as string);
-    const country = parseElementText(element, "country") as string;
-
-    const currentPlayers = parseInt(
-      parseElementText(element, "current_players") as string
-    );
-
-    const timeStampRaw = parseElementText(element, "timeStamp");
-    const timeStamp = timeStampRaw ? parseInt(timeStampRaw) : undefined;
-
-    const version = parseElementText(element, "version") as string;
-    const dedicated =
-      parseElementText(element, "dedicated") === "1" ? true : false;
-    const mod = parseElementText(element, "mod");
-    const playerList = Array.from(element.querySelectorAll("player")).map(
-      (el) => el.textContent as string
-    );
-
-    const comment = parseElementText(element, "comment");
-    const url = parseElementText(element, "url");
-    const maxPlayers = parseInt(
-      parseElementText(element, "max_players") as string
-    );
-    const mode = parseElementText(element, "mode") as string;
-    const realm = parseElementText(element, "realm");
-
+  const serverList: DisplayServerItem[] = res.result.server.map((server) => {
     const block: DisplayServerItem = {
-      name,
-      ipAddress,
-      port,
-      mapId,
-      mapName,
-      bots,
-      country,
-      currentPlayers,
-      timeStamp,
-      version,
-      dedicated,
-      mod,
-      playerList,
-      comment,
-      url,
-      maxPlayers,
-      mode,
-      realm,
+      name: server.name,
+      ipAddress: server.address,
+      port: server.port,
+      mapId: server.map_id,
+      mapName: server.map_name,
+      bots: server.bots,
+      country: server.country,
+      currentPlayers: server.current_players,
+      timeStamp: server.timeStamp,
+      version: server.version,
+      dedicated: server.dedicated === 1,
+      mod: server.mod,
+      playerList: fixPlayerList(server.player),
+      comment: server.comment,
+      url: server.url,
+      maxPlayers: server.max_players,
+      mode: server.mode,
+      realm: server.realm,
     };
 
-    serverList.push(block);
+    return block;
   });
 
   return serverList;
