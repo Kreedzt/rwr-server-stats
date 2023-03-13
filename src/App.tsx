@@ -163,8 +163,8 @@ function App() {
         >
           点我刷新数据
         </Button>
-        {loading && <p>刷新中, 请勿操作...</p>}
-        <p>最后刷新时间:&nbsp;{requestCompletedTime}</p>
+        {loading && <p className="text-purple-500">刷新中, 请勿操作...</p>}
+        <p className="text-orange-500">最后刷新时间:&nbsp;{requestCompletedTime}</p>
       </div>
       <div className="all-stat-area">
         <p
