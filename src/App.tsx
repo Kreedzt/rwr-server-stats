@@ -118,15 +118,10 @@ function App() {
     refresh();
   }, []);
 
-  const joinServer = useCallback(
-    (server: ServerItem) => (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const url = `steam://rungameid/270150//server_address=${server.ip} server_port=${server.port}`;
-      window.open(url);
-    },
-    []
-  );
+  const joinServer = useCallback((server: ServerItem) => {
+    const url = `steam://rungameid/270150//server_address=${server.ip} server_port=${server.port}`;
+    window.open(url);
+  }, []);
 
   const scrollToTop = useCallback(() => {
     window.scrollTo(0, 0);
@@ -262,17 +257,18 @@ function App() {
               )}
 
               <div>
-                <a href={s.website}>
-                  <Button className="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-200 mr-2">
+                <a href={s.website} className="mr-2">
+                  <Button className="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-200">
                     访问详情 &gt;
                   </Button>
-                  <Button
-                    onClick={joinServer(s)}
-                    className="bg-orange-600 hover:bg-orange-700 focus:ring-orange-500 disabled:bg-orange-200"
-                  >
-                    加入服务器 &gt;
-                  </Button>
                 </a>
+
+                <Button
+                  onClick={() => joinServer(s)}
+                  className="bg-orange-600 hover:bg-orange-700 focus:ring-orange-500 disabled:bg-orange-200"
+                >
+                  加入服务器 &gt;
+                </Button>
               </div>
             </div>
           ))}
