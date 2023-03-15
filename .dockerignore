@@ -6,6 +6,7 @@
 /.git
 /public/env/message_list.js
 /public/env/server_list.js
+/public/env/env.js
 
 LICENSE
 .ignore
