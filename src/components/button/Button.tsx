@@ -11,7 +11,7 @@ export type ButtonProps = React.DetailedHTMLProps<
 
 const Button: FC<ButtonProps> = ({ className, loading, ...otherProps }) => {
   const combineClassName = useCombineClassName(
-    "inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:text-sm",
+    "inline-flex w-full justify-center border border-transparent text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:text-sm",
     [className]
   );
 

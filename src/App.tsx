@@ -132,12 +132,20 @@ function App() {
       return "text-red-500";
     }
 
+    if (curr === 0) {
+      return "text-gray-500";
+    }
+
     return "text-green-500";
   }, []);
 
   const getPlayerStatClassName = useCallback((curr: number, total: number) => {
     if (curr === total) {
       return "text-red-500";
+    }
+
+    if (curr === 0) {
+      return "text-gray-500";
     }
 
     if (curr / total > 0.8) {
@@ -156,15 +164,13 @@ function App() {
         })}
       </div>
       <div className="mt-2">
-        <Button
-          className="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-200"
-          onClick={refresh}
-          loading={loading}
-        >
+        <Button className="btn-blue" onClick={refresh} loading={loading}>
           点我刷新数据
         </Button>
         {loading && <p className="text-purple-500">刷新中, 请勿操作...</p>}
-        <p className="text-orange-500">最后刷新时间:&nbsp;{requestCompletedTime}</p>
+        <p className="text-orange-500">
+          最后刷新时间:&nbsp;{requestCompletedTime}
+        </p>
       </div>
       <div className="all-stat-area">
         <p
@@ -258,15 +264,10 @@ function App() {
 
               <div>
                 <a href={s.website} className="mr-2">
-                  <Button className="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-200">
-                    访问详情 &gt;
-                  </Button>
+                  <Button className="btn-blue">访问详情 &gt;</Button>
                 </a>
 
-                <Button
-                  onClick={() => joinServer(s)}
-                  className="bg-orange-600 hover:bg-orange-700 focus:ring-orange-500 disabled:bg-orange-200"
-                >
+                <Button onClick={() => joinServer(s)} className="btn-orange">
                   加入服务器 &gt;
                 </Button>
               </div>
