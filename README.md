@@ -1,6 +1,7 @@
 # RWR 服务器状态查询
 
 ![license](https://badgen.net/github/license/Kreedzt/rwr-server-stats)
+[![codecov](https://codecov.io/gh/Kreedzt/rwr-server-stats/branch/master/graph/badge.svg?token=OLK64A6MAM)](https://codecov.io/gh/Kreedzt/rwr-server-stats)
 ![latest release](https://badgen.net/github/release/Kreedzt/rwr-server-stats)
 ![commits count](https://badgen.net/github/commits/Kreedzt/rwr-server-stats)
 ![last commit](https://badgen.net/github/last-commit/Kreedzt/rwr-server-stats)
