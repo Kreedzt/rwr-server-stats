@@ -33,3 +33,6 @@ server_list.js
 env.js
 .env
 .env*
+
+# test
+coverage/
