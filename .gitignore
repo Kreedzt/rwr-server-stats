@@ -31,3 +31,8 @@ publish_oss.js
 message_list.js
 server_list.js
 env.js
+.env
+.env*
+
+# test
+coverage/

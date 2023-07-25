@@ -6,28 +6,31 @@ import {
   getCurrentTimeStr,
   getUnlimitedServerList,
 } from "./utils";
-// import "./App.css";
 import Button from "./components/button/Button";
+
+// read from env
+document.title = ENV.HTML_TITLE;
+const MATCH_REGEX = new RegExp(ENV.SERVER_MATCH_REGEX);
 
 function App() {
   const [mapDict, setMapDict] = useState<Record<string, DisplayServerItem>>({});
+  const [displayServerList, setDisplayServerList] = useState<
+    DisplayServerItem[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [requestCompletedTime, setRequestCompletedTime] = useState<string>();
-  const [onlineStats, setOnlineStats] = useState<Record<string, OnlineStats>>({
-    [ALL_STATS_KEY]: generateEmptyOnlineStatItem(),
-  });
 
   const groupedItems = useMemo<GroupedServerItem[]>(() => {
     /**
      * key: group name
      * value: ServerItem[]
      */
-    const groupedMap = new Map<string, ServerItem[]>();
+    const groupedMap = new Map<string, DisplayServerItem[]>();
 
-    server_list.forEach((serverItem) => {
-      const target = groupedMap.get(serverItem.group);
+    displayServerList.forEach((serverItem) => {
+      const target = groupedMap.get(serverItem.country);
       if (!target) {
-        groupedMap.set(serverItem.group, [serverItem]);
+        groupedMap.set(serverItem.country, [serverItem]);
       } else {
         target.push(serverItem);
       }
@@ -37,58 +40,55 @@ function App() {
 
     groupedMap.forEach((serverItems, group) => {
       groupedServerItemList.push({
-        groupName: group,
+        groupName: `地区: ${group}`,
         serverList: serverItems,
       });
     });
     return groupedServerItemList;
-  }, []);
+  }, [displayServerList]);
 
-  const topMessageList = useMemo<string[]>(() => {
-    return message_list;
-  }, []);
+  const onlineStats = useMemo<Record<string, OnlineStats>>(() => {
+    const nextOnlineStats: Record<string, OnlineStats> = {};
 
-  const updateOnlineStats = useCallback(
-    (mapDict: Record<string, DisplayServerItem>) => {
-      const nextOnlineStats: Record<string, OnlineStats> = {};
+    let rootServerOnlineCount = 0;
+    let rootServerTotalCount = 0;
+    let rootPlayerOnlineCount = 0;
+    let rootPlayerCapacityCount = 0;
 
-      let rootServerOnlineCount = 0;
-      let rootServerTotalCount = 0;
-      let rootPlayerOnlineCount = 0;
-      let rootPlayerCapacityCount = 0;
+    groupedItems.forEach((group) => {
+      const groupOnlineStat = generateEmptyOnlineStatItem();
 
-      groupedItems.forEach((group) => {
-        const groupOnlineStat = generateEmptyOnlineStatItem();
+      group.serverList.forEach((s) => {
+        rootServerTotalCount += 1;
+        groupOnlineStat.allServerCount += 1;
 
-        group.serverList.forEach((s) => {
-          rootServerTotalCount += 1;
-          groupOnlineStat.allServerCount += 1;
+        if (s.name in mapDict) {
+          rootServerOnlineCount += 1;
+          rootPlayerCapacityCount += mapDict[s.name].maxPlayers;
+          rootPlayerOnlineCount += mapDict[s.name].currentPlayers;
 
-          if (s.name in mapDict) {
-            rootServerOnlineCount += 1;
-            rootPlayerCapacityCount += mapDict[s.name].maxPlayers;
-            rootPlayerOnlineCount += mapDict[s.name].currentPlayers;
-
-            groupOnlineStat.onlineServerCount += 1;
-            groupOnlineStat.playerCapacityCount += mapDict[s.name].maxPlayers;
-            groupOnlineStat.onlinePlayerCount += mapDict[s.name].currentPlayers;
-          }
-        });
-
-        nextOnlineStats[group.groupName] = groupOnlineStat;
+          groupOnlineStat.onlineServerCount += 1;
+          groupOnlineStat.playerCapacityCount += mapDict[s.name].maxPlayers;
+          groupOnlineStat.onlinePlayerCount += mapDict[s.name].currentPlayers;
+        }
       });
 
-      nextOnlineStats[ALL_STATS_KEY] = {
-        allServerCount: rootServerTotalCount,
-        onlineServerCount: rootServerOnlineCount,
-        onlinePlayerCount: rootPlayerOnlineCount,
-        playerCapacityCount: rootPlayerCapacityCount,
-      };
+      nextOnlineStats[group.groupName] = groupOnlineStat;
+    });
 
-      setOnlineStats(nextOnlineStats);
-    },
-    [groupedItems]
-  );
+    nextOnlineStats[ALL_STATS_KEY] = {
+      allServerCount: rootServerTotalCount,
+      onlineServerCount: rootServerOnlineCount,
+      onlinePlayerCount: rootPlayerOnlineCount,
+      playerCapacityCount: rootPlayerCapacityCount,
+    };
+
+    return nextOnlineStats;
+  }, [displayServerList, groupedItems, mapDict]);
+
+  const topMessageList = useMemo<string[]>(() => {
+    return ENV.MESSAGE_LIST.split("\\n");
+  }, []);
 
   const refresh = useCallback(async () => {
     if (loading) {
@@ -105,21 +105,26 @@ function App() {
       }, {} as Record<string, DisplayServerItem>);
 
       setMapDict(newMapDict);
+
+      const serverListWithMatch = serverList.filter((s) => {
+        return MATCH_REGEX.test(s.name);
+      });
+
+      setDisplayServerList(serverListWithMatch);
       setRequestCompletedTime(getCurrentTimeStr());
-      updateOnlineStats(newMapDict);
     } catch (e) {
       console.log("Error", e);
     } finally {
       setLoading(false);
     }
-  }, [groupedItems, loading, updateOnlineStats]);
+  }, [groupedItems, loading]);
 
   useEffect(() => {
     refresh();
   }, []);
 
-  const joinServer = useCallback((server: ServerItem) => {
-    const url = `steam://rungameid/270150//server_address=${server.ip} server_port=${server.port}`;
+  const joinServer = useCallback((server: DisplayServerItem) => {
+    const url = `steam://rungameid/270150//server_address=${server.ipAddress} server_port=${server.port}`;
     window.open(url);
   }, []);
 
@@ -221,7 +226,7 @@ function App() {
             </p>
           </h5>
           {grouped.serverList.map((s) => (
-            <div className="server-item" key={s.website}>
+            <div className="server-item" key={`${s.ipAddress}:${s.port}`}>
               <h5 className="text-lg font-semibold">{s.name}</h5>
               {mapDict[s.name] ? (
                 <>
@@ -263,7 +268,7 @@ function App() {
               )}
 
               <div>
-                <a href={s.website} className="mr-2">
+                <a href={s.url ?? undefined} className="mr-2">
                   <Button className="btn-blue">访问详情 &gt;</Button>
                 </a>
 
