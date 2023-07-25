@@ -1,6 +1,6 @@
 export interface GroupedServerItem {
   groupName: string;
-  serverList: ServerItem[];
+  serverList: DisplayServerItem[];
 }
 
 export type Nullable<T> = T | null | undefined;

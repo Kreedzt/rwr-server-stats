@@ -12,6 +12,7 @@
 ### 手动部署
 
 #### 准备工作
+
 > 手动部署需要一个 web 服务器来挂载, 如: NGINX
 > 以下操作以 NGINX 为例
 
@@ -40,7 +41,15 @@ http {
 ```
 
 2. 复制一份本项目根目录的 `mime.types` 文件, 放置到与 `nginx.conf` 文件同位置
-3. 通过修改 env 下的文件来配置环境变量, 见 [该章节](https://github.com/Kreedzt/rwr-server-stats#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)
+3. 配置环境变量, 可在打包时通过编写 `.env` 文件使 vite 自动注入, 或者手动编写 script 标签注入到 window 中:
+```html
+<!--该 script 标签需要放置在 index.html 的 head 标签内-->
+<script>
+  window.SERVER_MATCH_REGEX='Imba >';
+  window.MESSAGE_LIST = '这是第一行说明\n这是第二行说明';
+  window.HTML_TITLE: 'RWR 服务器状态查询';
+</script>
+```
 
 #### 启动 NGINX
 
@@ -63,10 +72,14 @@ nginx -c ../nginx.conf
 
 暴露端口为 80
 
-需要挂载的目录:
-- /dist/env: 对应环境变量目录, 文件内容见 [该章节](https://github.com/Kreedzt/rwr-server-stats#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F)
+需要配置的环境变量:
+
+- SERVER_MATCH_REGEX
+- MESSAGE_LIST
+- HTML_TITLE
 
 启动示例:
+
 ```sh
 docker run --name rwr-server-stats-docker -p 10010:80 -v $PWD/env:/dist/env -d zhaozisong0/rwr-server-stats:latest
 ```
