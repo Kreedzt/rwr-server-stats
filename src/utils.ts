@@ -115,3 +115,11 @@ export const generateEmptyOnlineStatItem = (): OnlineStats => {
 
   return temp;
 };
+
+export const isServerMatch = (env: typeof ENV, server: DisplayServerItem): boolean => {
+  if (!!env.SERVER_MATCH_REALM) {
+    return new RegExp(env.SERVER_MATCH_REGEX).test(server.name) && server.realm === env.SERVER_MATCH_REALM;
+  }
+
+  return new RegExp(env.SERVER_MATCH_REGEX).test(server.name);
+}

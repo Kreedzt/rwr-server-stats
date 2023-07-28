@@ -5,6 +5,7 @@ import {
   generateEmptyOnlineStatItem,
   getCurrentTimeStr,
   getUnlimitedServerList,
+  isServerMatch,
 } from "./utils";
 import Button from "./components/button/Button";
 
@@ -107,7 +108,7 @@ function App() {
       setMapDict(newMapDict);
 
       const serverListWithMatch = serverList.filter((s) => {
-        return MATCH_REGEX.test(s.name);
+        return isServerMatch(ENV, s);
       });
 
       setDisplayServerList(serverListWithMatch);
