@@ -36,3 +36,6 @@ env.js
 
 # test
 coverage/
+
+# Local Netlify folder
+.netlify

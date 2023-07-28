@@ -3,8 +3,7 @@
   command = "npm run build"
 
 [[redirects]]
-  from = "/api/"
-  to = "http://rwr.runningwithrifles.com/"
-  host = "rwr.runningwithrifles.com"
+  from = "/api/*"
+  to = "http://rwr.runningwithrifles.com/:splat"
   status = 200
   force = true
