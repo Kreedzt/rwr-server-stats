@@ -4,4 +4,4 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://rwr.runningwithrifles.com/:match"
+  to = "http://rwr.runningwithrifles.com/"
