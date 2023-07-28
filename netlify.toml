@@ -3,5 +3,5 @@
   command = "npm run build"
 
 [[redirects]]
-  from = "/api"
-  to = "http://rwr.runningwithrifles.com"
+  from = "/api/*"
+  to = "http://rwr.runningwithrifles.com/:match"
