@@ -21,6 +21,10 @@ const fixPlayerList = (raw: string | undefined | string[]): string[] => {
   return [];
 };
 
+export const getMapKey = (s: DisplayServerItem) => {
+  return `${s.ipAddress}:${s.port}`;
+}
+
 export const parseServerListFromString = (
   resString: string
 ): DisplayServerItem[] => {
