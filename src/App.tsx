@@ -4,6 +4,7 @@ import { DisplayServerItem, GroupedServerItem, OnlineStats } from "./types";
 import {
   generateEmptyOnlineStatItem,
   getCurrentTimeStr,
+  getMapKey,
   getUnlimitedServerList,
   isServerMatch,
 } from "./utils";
@@ -62,15 +63,16 @@ function App() {
       group.serverList.forEach((s) => {
         rootServerTotalCount += 1;
         groupOnlineStat.allServerCount += 1;
+        const mapKey = getMapKey(s);
 
-        if (s.name in mapDict) {
+        if (mapKey in mapDict) {
           rootServerOnlineCount += 1;
-          rootPlayerCapacityCount += mapDict[s.name].maxPlayers;
-          rootPlayerOnlineCount += mapDict[s.name].currentPlayers;
+          rootPlayerCapacityCount += mapDict[mapKey].maxPlayers;
+          rootPlayerOnlineCount += mapDict[mapKey].currentPlayers;
 
           groupOnlineStat.onlineServerCount += 1;
-          groupOnlineStat.playerCapacityCount += mapDict[s.name].maxPlayers;
-          groupOnlineStat.onlinePlayerCount += mapDict[s.name].currentPlayers;
+          groupOnlineStat.playerCapacityCount += mapDict[mapKey].maxPlayers;
+          groupOnlineStat.onlinePlayerCount += mapDict[mapKey].currentPlayers;
         }
       });
 
@@ -101,7 +103,7 @@ function App() {
       console.log(serverList);
 
       const newMapDict = serverList.reduce((acc, item) => {
-        acc[item.name] = item;
+        acc[getMapKey(item)] = item;
         return acc;
       }, {} as Record<string, DisplayServerItem>);
 
@@ -226,59 +228,62 @@ function App() {
               {onlineStats[grouped.groupName]?.playerCapacityCount}
             </p>
           </h5>
-          {grouped.serverList.map((s) => (
-            <div className="server-item" key={`${s.ipAddress}:${s.port}`}>
-              <h5 className="text-lg font-semibold">{s.name}</h5>
-              {mapDict[s.name] ? (
-                <>
-                  <div className="m-0">
-                    国家/地区:
-                    {mapDict[s.name].country}
-                  </div>
-                  <div className="m-0">地图: {mapDict[s.name].mapId}</div>
-                  <div className="m-0">
-                    描述:
-                    <p>{mapDict[s.name].comment}</p>
-                  </div>
-                  <div
-                    className={`para-item ${getPlayerStatClassName(
-                      mapDict[s.name].currentPlayers,
-                      mapDict[s.name].maxPlayers
-                    )}`}
-                  >
-                    玩家数量: {mapDict[s.name].currentPlayers} /{" "}
-                    {mapDict[s.name].maxPlayers}
-                  </div>
-                  <div className="para-item">
-                    玩家列表:
-                    {mapDict[s.name].playerList.length > 0 ? (
-                      <ul className="mt-2 mb-2 ml-6 list-disc">
-                        {mapDict[s.name].playerList.map((playerName) => (
-                          <li className="underline" key={playerName}>
-                            {playerName}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      "暂无玩家"
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className="text-red-500">无法获取数据</div>
-              )}
+          {grouped.serverList.map((s) => {
+            const mapKey = getMapKey(s);
+            return (
+              <div className="server-item" key={`${s.ipAddress}:${s.port}`}>
+                <h5 className="text-lg font-semibold">{s.name}</h5>
+                {mapDict[mapKey] ? (
+                  <>
+                    <div className="m-0">
+                      国家/地区:
+                      {mapDict[mapKey].country}
+                    </div>
+                    <div className="m-0">地图: {mapDict[mapKey].mapId}</div>
+                    <div className="m-0">
+                      描述:
+                      <p>{mapDict[mapKey].comment}</p>
+                    </div>
+                    <div
+                      className={`para-item ${getPlayerStatClassName(
+                        mapDict[mapKey].currentPlayers,
+                        mapDict[mapKey].maxPlayers
+                      )}`}
+                    >
+                      玩家数量: {mapDict[mapKey].currentPlayers} /{" "}
+                      {mapDict[mapKey].maxPlayers}
+                    </div>
+                    <div className="para-item">
+                      玩家列表:
+                      {mapDict[mapKey].playerList.length > 0 ? (
+                        <ul className="mt-2 mb-2 ml-6 list-disc">
+                          {mapDict[mapKey].playerList.map((playerName) => (
+                            <li className="underline" key={playerName}>
+                              {playerName}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        "暂无玩家"
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-red-500">无法获取数据</div>
+                )}
 
-              <div>
-                <a href={s.url ?? undefined} className="mr-2">
-                  <Button className="btn-blue">访问详情 &gt;</Button>
-                </a>
+                <div>
+                  <a href={s.url ?? undefined} className="mr-2">
+                    <Button className="btn-blue">访问详情 &gt;</Button>
+                  </a>
 
-                <Button onClick={() => joinServer(s)} className="btn-orange">
-                  加入服务器 &gt;
-                </Button>
+                  <Button onClick={() => joinServer(s)} className="btn-orange">
+                    加入服务器 &gt;
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ))}
       <div
