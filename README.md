@@ -14,6 +14,7 @@
 - SERVER_MATCH_REALM: 仅限查询官方服务器使用, 对应 realm 值
   + official_invasion: 官方入侵服务器
   + official_pacific: 官方二战服务器
+  + official_dominance: 官方 PVP 服务器
 
 ## 开发
 
