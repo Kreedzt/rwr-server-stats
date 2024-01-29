@@ -11,6 +11,10 @@
 - SERVER_MATCH_REGEX: 正则表达式(JavaScript), 用于过滤服务器列表, 只有匹配的服务器才会被渲染
 - MESSAGE_LIST: 该常量为提供顶部的消息提示, 类型为字符串数组, 按照 `\n` 符号换行
 - HTML_TITLE: 网站标题, 会显示在浏览器标签页上
+- SERVER_MATCH_REALM: 仅限查询官方服务器使用, 对应 realm 值
+  + official_invasion: 官方入侵服务器
+  + official_pacific: 官方二战服务器
+  + official_dominance: 官方 PVP 服务器
 
 ## 开发
 
