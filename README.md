@@ -66,6 +66,9 @@ pnpm build
 
 ## 部署
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKreedzt%2Frwr-server-stats&env=MESSAGE_LIST,SERVER_MATCH_REGEX,HTML_TITLE,SERVER_MATCH_REALM&envDescription=SERVER_MATCH_REGEX%3A%20%E4%B8%BA%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F(JavaScript)%2C%20%E5%8F%AA%E6%9C%89%E5%8C%B9%E9%85%8D%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%89%8D%E4%BC%9A%E8%A2%AB%E6%B8%B2%E6%9F%93&envLink=https%3A%2F%2Fgithub.com%2FKreedzt%2Frwr-server-stats%2Fblob%2Fmaster%2FREADME.md%23%25E9%2585%258D%25E7%25BD%25AE%25E7%258E%25AF%25E5%25A2%2583%25E5%258F%2598%25E9%2587%258F&project-name=rwr-server-stats&repository-name=rwr-server-stats)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Kreedzt/rwr-server-stats)
+
 见 [部署文档](https://github.com/Kreedzt/rwr-server-stats/blob/master/DEPLOYMENT.md)
 
 ## 同类型项目
