@@ -7,3 +7,9 @@
   to = "http://rwr.runningwithrifles.com/:splat"
   status = 200
   force = true
+
+[template.environment]
+  HTML_TITLE = "Invasion: RWR 服务器状态查询"
+  SERVER_MATCH_REGEX = "Invasion"
+  SERVER_MATCH_REALM = "official_invasion"
+  MESSAGE_LIST = "> 若单独几个信息无法获取，则服务器可能在换图\\n> 若长期所有信息无法获取，请联系服务器管理员\\n>\"加入服务器\"功能需要游戏客户端关闭时才生效"
