@@ -77,6 +77,7 @@ nginx -c ../nginx.conf
 - SERVER_MATCH_REGEX
 - MESSAGE_LIST
 - HTML_TITLE
+- SERVER_MATCH_REALM
 
 启动示例:
 
