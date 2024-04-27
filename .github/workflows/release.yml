@@ -33,7 +33,7 @@ jobs:
         working-directory: dist
         run: zip -r ../dist.zip .
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: dist.zip
   docker:
