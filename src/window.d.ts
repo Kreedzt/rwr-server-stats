@@ -11,4 +11,5 @@ declare const ENV: {
   MESSAGE_LIST: string;
   HTML_TITLE: string;
   SERVER_MATCH_REALM?: string;
+  ROUTE_PREFIX?: string;
 };

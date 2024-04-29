@@ -1,4 +1,4 @@
-const SERVER_API_URL = "/api/rwr_server_list";
+const SERVER_API_URL = (ENV.ROUTE_PREFIX ?? '') + "/api/rwr_server_list";
 
 export const getServerList = async (params: {
   start: number;

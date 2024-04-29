@@ -6,7 +6,8 @@ const OVERWRITE_ENV = {
   SERVER_MATCH_REGEX: process.env.SERVER_MATCH_REGEX,
   MESSAGE_LIST: process.env.MESSAGE_LIST,
   HTML_TITLE: process.env.HTML_TITLE,
-  SERVER_MATCH_REALM: process.env.SERVER_MATCH_REALM
+  SERVER_MATCH_REALM: process.env.SERVER_MATCH_REALM,
+  ROUTE_PREFIX: process.env.ROUTE_PREFIX
 };
 
 console.log('overwrite env:', JSON.stringify(OVERWRITE_ENV));
@@ -40,6 +41,10 @@ const replaceEnv = () => {
 
   if (!OVERWRITE_ENV.SERVER_MATCH_REALM) {
     newHTML = newHTML.replace('<SERVER_MATCH_REALM>', '');
+  }
+
+  if (!OVERWRITE_ENV.ROUTE_PREFIX) {
+    newHTML = newHTML.replace('<ROUTE_PREFIX>', '');
   }
 
   if (newHTML !== htmlContent) {
