@@ -35,16 +35,16 @@ const replaceEnv = () => {
   let newHTML = htmlContent;
   Object.entries(OVERWRITE_ENV).forEach(([k, v]) => {
     if (v) {
-      newHTML = newHTML.replace(`<${k}>`, v);
+      newHTML = newHTML.replaceAll(`<${k}>`, v);
     }
   });
 
   if (!OVERWRITE_ENV.SERVER_MATCH_REALM) {
-    newHTML = newHTML.replace('<SERVER_MATCH_REALM>', '');
+    newHTML = newHTML.replaceAll('<SERVER_MATCH_REALM>', '');
   }
 
   if (!OVERWRITE_ENV.ROUTE_PREFIX) {
-    newHTML = newHTML.replace('<ROUTE_PREFIX>', '');
+    newHTML = newHTML.replaceAll('<ROUTE_PREFIX>', '');
   }
 
   if (newHTML !== htmlContent) {
