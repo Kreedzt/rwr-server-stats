@@ -11,8 +11,8 @@ import {
 import Button from "./components/button/Button";
 
 // read from env
-document.title = ENV.HTML_TITLE;
-const MATCH_REGEX = new RegExp(ENV.SERVER_MATCH_REGEX);
+document.title = window.ENV.HTML_TITLE;
+const MATCH_REGEX = new RegExp(window.ENV.SERVER_MATCH_REGEX);
 
 function App() {
   const [mapDict, setMapDict] = useState<Record<string, DisplayServerItem>>({});
@@ -90,7 +90,7 @@ function App() {
   }, [displayServerList, groupedItems, mapDict]);
 
   const topMessageList = useMemo<string[]>(() => {
-    return ENV.MESSAGE_LIST.split("\\n");
+    return window.ENV.MESSAGE_LIST.split("\\n");
   }, []);
 
   const refresh = useCallback(async () => {
@@ -110,7 +110,7 @@ function App() {
       setMapDict(newMapDict);
 
       const serverListWithMatch = serverList.filter((s) => {
-        return isServerMatch(ENV, s);
+        return isServerMatch(window.ENV, s);
       });
 
       setDisplayServerList(serverListWithMatch);

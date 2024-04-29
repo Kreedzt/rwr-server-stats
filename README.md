@@ -15,6 +15,7 @@
   + official_invasion: 官方入侵服务器
   + official_pacific: 官方二战服务器
   + official_dominance: 官方 PVP 服务器
+- ROUTE_PREFIX: 路由前缀, 配合 Docker/k8s 部署使用 
 
 ## 开发
 
