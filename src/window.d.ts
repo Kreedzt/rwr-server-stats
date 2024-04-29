@@ -6,10 +6,14 @@ declare interface ServerItem {
   website: string;
 }
 
-declare const ENV: {
+declare interface ENV {
   SERVER_MATCH_REGEX: string;
   MESSAGE_LIST: string;
   HTML_TITLE: string;
   SERVER_MATCH_REALM?: string;
   ROUTE_PREFIX?: string;
 };
+
+interface Window {
+  ENV: ENV;
+}
