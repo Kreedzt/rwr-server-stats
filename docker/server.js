@@ -44,6 +44,7 @@ const replaceEnv = () => {
   }
 
   if (!OVERWRITE_ENV.ROUTE_PREFIX) {
+    newHTML = newHTML.replaceAll('/<ROUTE_PREFIX>', '');
     newHTML = newHTML.replaceAll('<ROUTE_PREFIX>', '');
   }
 
