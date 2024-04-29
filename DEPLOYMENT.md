@@ -78,9 +78,16 @@ nginx -c ../nginx.conf
 - MESSAGE_LIST
 - HTML_TITLE
 - SERVER_MATCH_REALM
+- ROUTE_PREFIX
 
 启动示例:
 
 ```sh
-docker run --name rwr-server-stats-docker -p 10010:80 -v $PWD/env:/dist/env -d zhaozisong0/rwr-server-stats:latest
+docker run --name rwr-server-stats-docker -p 10010:80 \
+  -e MESSAGE_LIST='> 若单独几个信息无法获取，则服务器可能在换图\\n> 若长期所有信息无法获取，请联系服务器管理员\\n>"加入服务器"功能需要游戏客户端关闭时才生效' \
+  -e SERVER_MATCH_REGEX='Invasion' \
+  -e HTML_TITLE='Invasion: RWR 服务器状态查询' \
+  -e SERVER_MATCH_REALM='official_invasion' \
+  -e ROUTE_PREFIX='/imba' \
+  -d zhaozisong0/rwr-server-stats:latest
 ```
