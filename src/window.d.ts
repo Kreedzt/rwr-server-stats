@@ -12,6 +12,7 @@ declare interface ENV {
   HTML_TITLE: string;
   SERVER_MATCH_REALM?: string;
   ROUTE_PREFIX?: string;
+  API_PREFIX?: string;
 };
 
 interface Window {

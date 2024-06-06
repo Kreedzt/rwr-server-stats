@@ -78,7 +78,6 @@ nginx -c ../nginx.conf
 - MESSAGE_LIST
 - HTML_TITLE
 - SERVER_MATCH_REALM
-- ROUTE_PREFIX
 
 启动示例:
 
@@ -88,6 +87,5 @@ docker run --name rwr-server-stats-docker -p 10010:80 \
   -e SERVER_MATCH_REGEX='Invasion' \
   -e HTML_TITLE='Invasion: RWR 服务器状态查询' \
   -e SERVER_MATCH_REALM='official_invasion' \
-  -e ROUTE_PREFIX='/imba' \
   -d zhaozisong0/rwr-server-stats:latest
 ```

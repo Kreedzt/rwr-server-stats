@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "build-oss": "tsc && vite build --config vite.build.config.ts",
+    "build-oss": "tsc && vite build --config vite.oss.config.ts",
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",

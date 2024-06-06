@@ -12,16 +12,6 @@ export default defineConfig((config) => {
     ROUTE_PREFIX?: string;
   };
 
-  let buildBase = '/';
-
-  if (env.ROUTE_PREFIX) {
-    if (env.ROUTE_PREFIX.endsWith('/')) {
-      buildBase = env.ROUTE_PREFIX;
-    } else {
-      buildBase = env.ROUTE_PREFIX + '/';
-    }
-  }
-
   return {
     plugins: [
       react(),
@@ -34,7 +24,7 @@ export default defineConfig((config) => {
         },
       }),
     ],
-    base: buildBase,
+    base: '/',
     server: {
       proxy: {
         "/api": {
