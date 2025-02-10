@@ -6,10 +6,13 @@ import { useServerData } from "./hooks/useServerData";
 import { useGroupedServers } from "./hooks/useGroupedServers";
 import { useOnlineStats } from "./hooks/useOnlineStats";
 import { useStatusClass } from "./hooks/useStatusClass";
-import { getMapKey } from "./utils"; // Importing getMapKey
+import { getMapKey } from "./utils";
+import TabPane from "./components/tab/TabPane";
+import { useMode } from "./hooks/useMode";
 
 // read from env
 document.title = window.ENV.HTML_TITLE;
+const topMessageList = window.ENV.MESSAGE_LIST.split("\\n");
 
 function App() {
   const { mapDict, displayServerList, loading, requestCompletedTime, refresh } =
@@ -17,6 +20,7 @@ function App() {
   const groupedItems = useGroupedServers(displayServerList);
   const onlineStats = useOnlineStats(mapDict, groupedItems);
   const { getServerStatClassName, getPlayerStatClassName } = useStatusClass();
+  const { modes, activeMode, onModeChange } = useMode();
 
   const joinServer = useCallback((server: DisplayServerItem) => {
     const url = `steam://rungameid/270150//server_address=${server.ipAddress} server_port=${server.port}`;
@@ -27,8 +31,6 @@ function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  const topMessageList = window.ENV.MESSAGE_LIST.split("\\n");
-
   return (
     <div className="container p-4">
       <div className="author">RWR 服务器状态查询 v: {VERSION}</div>
@@ -37,6 +39,7 @@ function App() {
           <p key={index}>{msg}</p>
         ))}
       </div>
+      {/* Controls */}
       <div className="mt-2">
         <Button className="btn-primary" onClick={refresh} loading={loading}>
           点我刷新数据
@@ -46,6 +49,7 @@ function App() {
           最后刷新时间:&nbsp;{requestCompletedTime}
         </p>
       </div>
+      {/* Stas */}
       <div className="all-stat-area">
         <p
           className={getServerStatClassName(
@@ -66,6 +70,9 @@ function App() {
           {onlineStats[ALL_STATS_KEY].playerCapacityCount}
         </p>
       </div>
+
+      {/* Switch */}
+      <TabPane active={activeMode} tabs={modes} onTabChange={onModeChange}></TabPane>
       {groupedItems.map((grouped) => (
         <div
           className="border rounded border-orange-400 mt-2 mb-2 p-2"
