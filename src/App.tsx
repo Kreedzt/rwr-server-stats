@@ -1,130 +1,22 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { ALL_STATS_KEY, VERSION } from "./constant";
-import { DisplayServerItem, GroupedServerItem, OnlineStats } from "./types";
-import {
-  generateEmptyOnlineStatItem,
-  getCurrentTimeStr,
-  getMapKey,
-  getUnlimitedServerList,
-  isServerMatch,
-} from "./utils";
+import { DisplayServerItem } from "./types";
 import Button from "./components/button/Button";
+import { useServerData } from "./hooks/useServerData";
+import { useGroupedServers } from "./hooks/useGroupedServers";
+import { useOnlineStats } from "./hooks/useOnlineStats";
+import { useStatusClass } from "./hooks/useStatusClass";
+import { getMapKey } from "./utils"; // Importing getMapKey
 
 // read from env
 document.title = window.ENV.HTML_TITLE;
-const MATCH_REGEX = new RegExp(window.ENV.SERVER_MATCH_REGEX);
 
 function App() {
-  const [mapDict, setMapDict] = useState<Record<string, DisplayServerItem>>({});
-  const [displayServerList, setDisplayServerList] = useState<
-    DisplayServerItem[]
-  >([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [requestCompletedTime, setRequestCompletedTime] = useState<string>();
-
-  const groupedItems = useMemo<GroupedServerItem[]>(() => {
-    /**
-     * key: group name
-     * value: ServerItem[]
-     */
-    const groupedMap = new Map<string, DisplayServerItem[]>();
-
-    displayServerList.forEach((serverItem) => {
-      const target = groupedMap.get(serverItem.country);
-      if (!target) {
-        groupedMap.set(serverItem.country, [serverItem]);
-      } else {
-        target.push(serverItem);
-      }
-    });
-
-    const groupedServerItemList: GroupedServerItem[] = [];
-
-    groupedMap.forEach((serverItems, group) => {
-      groupedServerItemList.push({
-        groupName: `地区: ${group}`,
-        serverList: serverItems,
-      });
-    });
-    return groupedServerItemList;
-  }, [displayServerList]);
-
-  const onlineStats = useMemo<Record<string, OnlineStats>>(() => {
-    const nextOnlineStats: Record<string, OnlineStats> = {};
-
-    let rootServerOnlineCount = 0;
-    let rootServerTotalCount = 0;
-    let rootPlayerOnlineCount = 0;
-    let rootPlayerCapacityCount = 0;
-
-    groupedItems.forEach((group) => {
-      const groupOnlineStat = generateEmptyOnlineStatItem();
-
-      group.serverList.forEach((s) => {
-        rootServerTotalCount += 1;
-        groupOnlineStat.allServerCount += 1;
-        const mapKey = getMapKey(s);
-
-        if (mapKey in mapDict) {
-          rootServerOnlineCount += 1;
-          rootPlayerCapacityCount += mapDict[mapKey].maxPlayers;
-          rootPlayerOnlineCount += mapDict[mapKey].currentPlayers;
-
-          groupOnlineStat.onlineServerCount += 1;
-          groupOnlineStat.playerCapacityCount += mapDict[mapKey].maxPlayers;
-          groupOnlineStat.onlinePlayerCount += mapDict[mapKey].currentPlayers;
-        }
-      });
-
-      nextOnlineStats[group.groupName] = groupOnlineStat;
-    });
-
-    nextOnlineStats[ALL_STATS_KEY] = {
-      allServerCount: rootServerTotalCount,
-      onlineServerCount: rootServerOnlineCount,
-      onlinePlayerCount: rootPlayerOnlineCount,
-      playerCapacityCount: rootPlayerCapacityCount,
-    };
-
-    return nextOnlineStats;
-  }, [displayServerList, groupedItems, mapDict]);
-
-  const topMessageList = useMemo<string[]>(() => {
-    return window.ENV.MESSAGE_LIST.split("\\n");
-  }, []);
-
-  const refresh = useCallback(async () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const serverList = await getUnlimitedServerList();
-      console.log(serverList);
-
-      const newMapDict = serverList.reduce((acc, item) => {
-        acc[getMapKey(item)] = item;
-        return acc;
-      }, {} as Record<string, DisplayServerItem>);
-
-      setMapDict(newMapDict);
-
-      const serverListWithMatch = serverList.filter((s) => {
-        return isServerMatch(window.ENV, s);
-      });
-
-      setDisplayServerList(serverListWithMatch);
-      setRequestCompletedTime(getCurrentTimeStr());
-    } catch (e) {
-      console.log("Error", e);
-    } finally {
-      setLoading(false);
-    }
-  }, [groupedItems, loading]);
-
-  useEffect(() => {
-    refresh();
-  }, []);
+  const { mapDict, displayServerList, loading, requestCompletedTime, refresh } =
+    useServerData();
+  const groupedItems = useGroupedServers(displayServerList);
+  const onlineStats = useOnlineStats(mapDict, groupedItems);
+  const { getServerStatClassName, getPlayerStatClassName } = useStatusClass();
 
   const joinServer = useCallback((server: DisplayServerItem) => {
     const url = `steam://rungameid/270150//server_address=${server.ipAddress} server_port=${server.port}`;
@@ -135,44 +27,18 @@ function App() {
     window.scrollTo(0, 0);
   }, []);
 
-  const getServerStatClassName = useCallback((curr: number, total: number) => {
-    if (curr !== total) {
-      return "text-red-500";
-    }
-
-    if (curr === 0) {
-      return "text-gray-500";
-    }
-
-    return "text-green-500";
-  }, []);
-
-  const getPlayerStatClassName = useCallback((curr: number, total: number) => {
-    if (curr === total) {
-      return "text-red-500";
-    }
-
-    if (curr === 0) {
-      return "text-gray-500";
-    }
-
-    if (curr / total > 0.8) {
-      return "text-orange-500";
-    }
-
-    return "text-green-500";
-  }, []);
+  const topMessageList = window.ENV.MESSAGE_LIST.split("\\n");
 
   return (
     <div className="container p-4">
       <div className="author">RWR 服务器状态查询 v: {VERSION}</div>
       <div className="border p-2">
-        {topMessageList.map((msg, index) => {
-          return <p key={index}>{msg}</p>;
-        })}
+        {topMessageList.map((msg, index) => (
+          <p key={index}>{msg}</p>
+        ))}
       </div>
       <div className="mt-2">
-        <Button className="btn-blue" onClick={refresh} loading={loading}>
+        <Button className="btn-primary" onClick={refresh} loading={loading}>
           点我刷新数据
         </Button>
         {loading && <p className="text-purple-500">刷新中, 请勿操作...</p>}
@@ -274,11 +140,16 @@ function App() {
 
                 <div>
                   <a href={s.url ?? undefined} className="mr-2">
-                    <Button className="btn-blue">访问详情 &gt;</Button>
+                    <Button className="btn-outline btn-success">
+                      访问详情 {">"}
+                    </Button>
                   </a>
 
-                  <Button onClick={() => joinServer(s)} className="btn-orange">
-                    加入服务器 &gt;
+                  <Button
+                    onClick={() => joinServer(s)}
+                    className="btn-outline btn-warning"
+                  >
+                    加入服务器 {">"}
                   </Button>
                 </div>
               </div>

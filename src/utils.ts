@@ -23,7 +23,7 @@ const fixPlayerList = (raw: string | undefined | string[]): string[] => {
 
 export const getMapKey = (s: DisplayServerItem) => {
   return `${s.ipAddress}:${s.port}`;
-}
+};
 
 export const parseServerListFromString = (
   resString: string
@@ -122,8 +122,11 @@ export const generateEmptyOnlineStatItem = (): OnlineStats => {
 
 export const isServerMatch = (env: ENV, server: DisplayServerItem): boolean => {
   if (!!env.SERVER_MATCH_REALM) {
-    return new RegExp(env.SERVER_MATCH_REGEX).test(server.name) && server.realm === env.SERVER_MATCH_REALM;
+    return (
+      new RegExp(env.SERVER_MATCH_REGEX).test(server.name) &&
+      server.realm === env.SERVER_MATCH_REALM
+    );
   }
 
   return new RegExp(env.SERVER_MATCH_REGEX).test(server.name);
-}
+};

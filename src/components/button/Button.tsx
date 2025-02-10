@@ -1,6 +1,6 @@
 import React from "react";
 import type { FC } from "react";
-import { useCombineClassName } from "../../hooks/useCombineClassName";
+import { cn } from "../../ui/utils";
 
 export type ButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -10,9 +10,9 @@ export type ButtonProps = React.DetailedHTMLProps<
 };
 
 const Button: FC<ButtonProps> = ({ className, loading, ...otherProps }) => {
-  const combineClassName = useCombineClassName(
-    "inline-flex w-full justify-center border border-transparent text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:text-sm",
-    [className]
+  const combineClassName = cn(
+    "btn",
+    className
   );
 
   return (

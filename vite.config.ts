@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { createHtmlPlugin } from "vite-plugin-html";
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig((config) => {
@@ -10,26 +11,36 @@ export default defineConfig((config) => {
     HTML_TITLE: string;
     SERVER_MATCH_REALM?: string;
     ROUTE_PREFIX?: string;
+    MAP_LIST?: string;
   };
 
-  let buildBase = '/';
+  let buildBase = "/";
 
   if (env.ROUTE_PREFIX) {
-    if (env.ROUTE_PREFIX.endsWith('/')) {
+    if (env.ROUTE_PREFIX.endsWith("/")) {
       buildBase = env.ROUTE_PREFIX;
     } else {
-      buildBase = env.ROUTE_PREFIX + '/';
+      buildBase = env.ROUTE_PREFIX + "/";
     }
   }
 
   return {
     plugins: [
+      tailwindcss(),
       react(),
       createHtmlPlugin({
         inject: {
           data: {
             title: env.HTML_TITLE,
-            injectScript: `<script>window.ENV = { SERVER_MATCH_REGEX: '${env.SERVER_MATCH_REGEX}', MESSAGE_LIST: '${env.MESSAGE_LIST}', HTML_TITLE: '${env.HTML_TITLE}', SERVER_MATCH_REALM: '${env.SERVER_MATCH_REALM ?? ''}', ROUTE_PREFIX: '${env.ROUTE_PREFIX ?? ''}' }</script>`,
+            injectScript: `<script>window.ENV = { SERVER_MATCH_REGEX: '${
+              env.SERVER_MATCH_REGEX
+            }', MESSAGE_LIST: '${env.MESSAGE_LIST}', HTML_TITLE: '${
+              env.HTML_TITLE
+            }', SERVER_MATCH_REALM: '${
+              env.SERVER_MATCH_REALM ?? ""
+            }', ROUTE_PREFIX: '${env.ROUTE_PREFIX ?? ""}', MAP_LIST: ${
+              env.MAP_LIST ?? []
+            } }</script>`,
           },
         },
       }),
